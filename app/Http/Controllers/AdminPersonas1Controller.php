@@ -2,8 +2,10 @@
 
 	use Session;
 	use Request;
-	use DB;
+	//use DB;
 	use CRUDBooster;
+	use Illuminate\Support\Facades\DB;
+//use Illuminate\Support\Facades\DB as FacadesDB;
 
 	class AdminPersonas1Controller extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -37,7 +39,7 @@
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 			$this->form[] = ['label'=>'Escalafon','name'=>'escalafon','type'=>'text','width'=>'col-sm-8','value'=>'OFICIALES'];
-			$this->form[] = ['label'=>'Grado','name'=>'grado','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','dataenum'=>'Cnl.;Tcnl.;My.;Cap.;Tte.;Sbtte.'];
+			$this->form[] = ['label'=>'Grado','name'=>'grado','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','dataenum'=>'Gral. Ejto.;Gral. Div.;Gral. Brig.;Cnl.;Tcnl.;My.;Cap.;Tte.;Sbtte.'];
 			$this->form[] = ['label'=>'Arma','name'=>'arma','type'=>'select2','validation'=>'required','width'=>'col-sm-8','dataenum'=>'Inf.;Cab.;Art.;Ing.;Com.;Log.'];
 			$this->form[] = ['label'=>'Especialidad','name'=>'especialidad','type'=>'select2','width'=>'col-sm-8','dataenum'=>'DAEN.;DEM.;DIM.;OEME.'];
 			$this->form[] = ['label'=>'Apellido Paterno','name'=>'paterno','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8'];
@@ -48,30 +50,30 @@
 			$this->form[] = ['label'=>'Año de egreso','name'=>'egreso','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8'];
 			$this->form[] = ['label'=>'Antiguedad','name'=>'antiguedad','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-8'];
 			$this->form[] = ['label'=>'Sexo','name'=>'sexo','type'=>'select2','validation'=>'required','width'=>'col-sm-8','dataenum'=>'Masculino;Femenino'];
-			$this->form[] = ['label' => 'Estado Civil', 'name' => 'estdo_civil', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-8', 'dataenum' => 'Soltero(a);Casado(a);Divorciado(a)'];
+			$this->form[] = ['label'=>'Estado Civil','name'=>'estdo_civil','type'=>'select2','validation'=>'required','width'=>'col-sm-8','dataenum'=>'Soltero(a);Casado(a);Divorciado(a)'];
 			$this->form[] = ['label'=>'Fecha Nacimiento','name'=>'fecha_nacimiento','type'=>'date','validation'=>'required|date','width'=>'col-sm-8'];
 			$this->form[] = ['label'=>'Domicilio','name'=>'domicilio','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8'];
 			$this->form[] = ['label'=>'Celular','name'=>'celular','type'=>'number','validation'=>'required|integer|min:8','width'=>'col-sm-8'];
 			$this->form[] = ['label'=>'Celular2','name'=>'celular2','type'=>'number','validation'=>'required|integer|min:8','width'=>'col-sm-8'];
 			$this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:personas','width'=>'col-sm-8','placeholder'=>'Please enter a valid email address'];
-			$this->form[] = ['label'=>'Foto','name'=>'foto','type'=>'upload','validation'=>'required|image|max:3000','width'=>'col-sm-8','help'=>'File types support : JPG, JPEG, PNG, GIF, BMP'];
+			$this->form[] = ['label'=>'Foto','name'=>'foto','type'=>'upload','validation'=>'required|image|max:3000','width'=>'col-sm-8','help'=>'Tipos de archivos soportados : JPG, JPEG, PNG, GIF, BMP hasta 3 MB'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
 			//$this->form[] = ['label'=>'Escalafon','name'=>'escalafon','type'=>'text','width'=>'col-sm-8','value'=>'OFICIALES'];
-			//$this->form[] = ['label'=>'Grado','name'=>'grado','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','dataenum'=>'Cnl.;Tcnl.;My.;Cap.;Tte.;Sbtte.'];
+			//$this->form[] = ['label'=>'Grado','name'=>'grado','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','dataenum'=>'Gral. Ejto.;Gral. Div.;Gral. Brig.;Cnl.;Tcnl.;My.;Cap.;Tte.;Sbtte.'];
 			//$this->form[] = ['label'=>'Arma','name'=>'arma','type'=>'select2','validation'=>'required','width'=>'col-sm-8','dataenum'=>'Inf.;Cab.;Art.;Ing.;Com.;Log.'];
 			//$this->form[] = ['label'=>'Especialidad','name'=>'especialidad','type'=>'select2','width'=>'col-sm-8','dataenum'=>'DAEN.;DEM.;DIM.;OEME.'];
-			//$this->form[] = ['label'=>'Paterno','name'=>'paterno','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8'];
-			//$this->form[] = ['label'=>'Materno','name'=>'materno','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8'];
+			//$this->form[] = ['label'=>'Apellido Paterno','name'=>'paterno','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8'];
+			//$this->form[] = ['label'=>'Apellido Materno','name'=>'materno','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8'];
 			//$this->form[] = ['label'=>'Nombre','name'=>'nombre','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8'];
 			//$this->form[] = ['label'=>'Ci','name'=>'ci','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-8'];
-			//$this->form[] = ['label'=>'Extension','name'=>'extension','type'=>'select2','validation'=>'required','width'=>'col-sm-8','dataenum'=>'CH;LP;CB;OR;PT;TJ;SC;BE;PD'];
-			//$this->form[] = ['label'=>'Egreso','name'=>'egreso','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8'];
+			//$this->form[] = ['label'=>'Extensión','name'=>'extension','type'=>'select2','validation'=>'required','width'=>'col-sm-8','dataenum'=>'CH;LP;CB;OR;PT;TJ;SC;BE;PD'];
+			//$this->form[] = ['label'=>'Año de egreso','name'=>'egreso','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8'];
 			//$this->form[] = ['label'=>'Antiguedad','name'=>'antiguedad','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-8'];
 			//$this->form[] = ['label'=>'Sexo','name'=>'sexo','type'=>'select2','validation'=>'required','width'=>'col-sm-8','dataenum'=>'Masculino;Femenino'];
-			//$this->form[] = ['label'=>'Estado Civil','name'=>'estdo_civil','type'=>'select2','validation'=>'required','width'=>'col-sm-8','dataenum'=>'Soltero;Casado;Divorciado'];
+			//$this->form[] = ['label'=>'Estado Civil','name'=>'estdo_civil','type'=>'select2','validation'=>'required','width'=>'col-sm-8','dataenum'=>'Soltero(a);Casado(a);Divorciado(a)'];
 			//$this->form[] = ['label'=>'Fecha Nacimiento','name'=>'fecha_nacimiento','type'=>'date','validation'=>'required|date','width'=>'col-sm-8'];
 			//$this->form[] = ['label'=>'Domicilio','name'=>'domicilio','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-8'];
 			//$this->form[] = ['label'=>'Celular','name'=>'celular','type'=>'number','validation'=>'required|integer|min:8','width'=>'col-sm-8'];
@@ -265,7 +267,7 @@
 	    */
 	    public function hook_query_index(&$query) {
 			//Your code here
-			$query->where('escalafon','OFICIALES')->orderBy('egreso','asc')->orderBy('antiguedad', 'asc') -> orderByRaw('grado', 'Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.'); 
+			$query->where('escalafon','OFICIALES')-> orderByRaw(DB::raw("FIELD(grado,'Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.')"))->orderBy('egreso','asc')->orderBy('antiguedad', 'asc'); 
 	    }
 
 	    /*
@@ -287,12 +289,21 @@
 	    */
 	    public function hook_before_add(&$postdata) {
 		//Your code here
+/*			$nomgrado = DB::table('grados')->find($postdata['grado']) -> nomgrado;
+
+			if ($postdata['especialidad'] == Null) {
+				$postdata['nombre_completo'] = $nomgrado . ' ' . $postdata['arma'] . ' ' . $postdata['nombre'] . ' ' . $postdata['paterno'] . ' ' . $postdata['materno'];
+			} else {
+				$postdata['nombre_completo'] = $nomgrado . ' ' . $postdata['especialidad'] . ' ' . $postdata['nombre'] . ' ' . $postdata['paterno'] . ' ' . $postdata['materno'];
+			}
+			$postdata['grado_id'] = DB::table('grados')->find($postdata['grado'])-> id;
+*/
 			if ($postdata['especialidad'] == Null) {
 				$postdata['nombre_completo'] = $postdata['grado'] . ' ' . $postdata['arma'] . ' ' . $postdata['nombre'] . ' ' . $postdata['paterno'] . ' ' . $postdata['materno'];
 			} else {
 				$postdata['nombre_completo'] = $postdata['grado'] . ' ' . $postdata['especialidad'] . ' ' . $postdata['nombre'] . ' ' . $postdata['paterno'] . ' ' . $postdata['materno'];
 			}
-	    }
+		    }
 
 	    /* 
 	    | ---------------------------------------------------------------------- 

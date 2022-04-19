@@ -5,7 +5,7 @@
 	//use DB;
 	use CRUDBooster;
 	use Illuminate\Support\Facades\DB;
-use Faker\Core\Number;
+	use Faker\Core\Number;
 
 	class AdminVacacionesController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -26,14 +26,14 @@ use Faker\Core\Number;
 			$this->button_show = true;
 			$this->button_filter = true;
 			$this->button_import = false;
-			$this->button_export = false;
+			$this->button_export = true;
 			$this->table = "vacacions";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
 			$this->col[] = ["label"=>"Persona Id","name"=>"persona_id","join"=>"personas,nombre_completo"];
-			$this->col[] = ["label"=>"Gestión","name"=>"gestion"];
+			//$this->col[] = ["label"=>"Gestión","name"=>"gestion"];
 			$this->col[] = ["label"=>"Años de Trabajo","name"=>"años_trabajo"];
 			$this->col[] = ["label"=>"Dias Vacacion","name"=>"dias_vacacion"];
 			$this->col[] = ["label"=>"Colectiva","name"=>"colectiva"];
@@ -265,36 +265,51 @@ use Faker\Core\Number;
 
 			$postdata['gestion'] = date('Y');
 
-			//busca año de egreso segun persona id y calcula años de antiguedad
+		//busca año de egreso segun persona id y calcula años de antiguedad
+
+			$egreso = DB::table('personas')->where('id',$postdata['persona_id'])->value('egreso');
+			$postdata['años_trabajo'] = $postdata['gestion'] - $egreso;
+
+		//busca tiempo de vacacion segun años de antiguedad, muestra dias de vacacion
+
+			$t_vacacion = DB::table('t_vacacions')->whereRaw('desde <= ? and hasta >= ?', [$postdata['años_trabajo'], $postdata['años_trabajo']])->value('t_vacacion');
 			
-			$egreso = DB::table('personas')->find($postdata['persona_id']);
-			$dato_egreso = $egreso->egreso;
+			$postdata['dias_vacacion'] = $t_vacacion;
 
-			$postdata['años_trabajo'] = $postdata['gestion'] - $dato_egreso;
+			if (DB::table('vacacions')->where('persona_id', $postdata['persona_id'])->exists() == 0){
+				$postdata['colectiva'] = 5;
 
-			//busca tiempo de vacacion segun años de antiguedad, muestra dias de vacacion
+				$postdata['dias_restantes'] = $postdata['dias_vacacion'] - $postdata['dias_solicitados'] - $postdata['colectiva'];
 
-			$vacacion_id = DB::table('t_vacacions') -> whereRaw('desde <= ? and hasta >= ?',[$postdata['años_trabajo'], $postdata['años_trabajo']])->pluck('id');
+				if ($postdata['horas_solicitadas'] > 0) {
+					$postdata['horas_restantes'] = 8 - $postdata['horas_solicitadas'];
+					$postdata['dias_restantes'] = $postdata['dias_restantes'] - 1;
+				};				
+			}
 
-			$t_vacacion = DB::table('t_vacacions')->find($vacacion_id);
-			$dato_tvacacion = $t_vacacion->t_vacacion;
+			else {
 
-			$postdata['dias_vacacion'] = $dato_tvacacion;
+				$dato = DB::table('vacacions')->where('persona_id',$postdata['persona_id'])->max('id');
+				$id = DB::table('vacacions')->find($dato);
+				
+				$postdata['colectiva'] = 5;
 
-			// 
+				$dias_restantes = $id -> dias_restantes;
+				$horas_restantes = $id-> horas_restantes; 
 
-			$persona_id = DB::table('vacacions')->where('','')->pluck('id');
-			$egreso = DB::table('personas')->find($postdata['persona_id']);
-			$dato_egreso = $egreso->egreso;
+				$postdata['dias_restantes'] = $dias_restantes - $postdata['dias_solicitados'];
+				$postdata['horas_restantes'] = $horas_restantes;
 
+				if ($postdata['horas_solicitadas'] > 0) {
 
+					$postdata['horas_restantes'] = $horas_restantes - $postdata['horas_solicitadas'];
 
-			$postdata['colectiva'] = 5;
-			
-			$postdata['dias_restantes'] = $postdata['dias_vacacion'] - $postdata['dias_solicitados'] - $postdata['colectiva'];
-			
-			$postdata['horas_restantes'] = $postdata['horas_restantes'] - $postdata['horas_solicitadas'];
-
+					if ($postdata['horas_restantes'] < 0){
+						$postdata['dias_restantes'] = $postdata['dias_restantes'] - 1;
+						$postdata['horas_restantes'] = 8 + $postdata['horas_restantes'];
+					}
+				}				
+			}
 	    }
 
 	    /* 
@@ -317,8 +332,8 @@ use Faker\Core\Number;
 	    | @id       = current id 
 	    | 
 	    */
-	    public function hook_before_edit(&$postdata,$id) {        
-	        //Your code here
+	    public function hook_before_edit(&$postdata,$id) {
+			//Your code here
 
 	    }
 
@@ -330,8 +345,8 @@ use Faker\Core\Number;
 	    | 
 	    */
 	    public function hook_after_edit($id) {
-	        //Your code here 
-
+		//Your code here 
+		
 	    }
 
 	    /* 

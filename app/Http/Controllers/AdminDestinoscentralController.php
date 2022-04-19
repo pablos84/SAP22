@@ -2,8 +2,9 @@
 
 	use Session;
 	use Request;
-	use DB;
+	//use DB;
 	use CRUDBooster;
+	use Illuminate\Support\Facades\DB;
 
 	class AdminDestinoscentralController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -39,6 +40,9 @@
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
+
+			$this->form[] = ['label' => 'Gestión', 'name' => 'gestion', 'value' => date('Y'), 'width' => 'col-sm-7'];
+
 			$this->form[] = ['label' => 'Grado, Nombre y Apellidos', 'name' => 'persona_id', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'datatable' => 'personas,nombre_completo'];
 			$this->form[] = ['label' => 'Distrito', 'name' => 'distrito', 'width' => 'col-sm-7', 'value' => 'CENTRAL'];
 
@@ -241,7 +245,8 @@
 	    */
 	    public function hook_query_index(&$query) {
 				//Your code here
-				$query->where('distrito','CENTRAL')->orderBy('egreso', 'asc')->orderBy('antiguedad', 'asc');
+				
+				$query->where('distrito','CENTRAL')-> where ('gestion', date('Y'))->orderByRaw(DB::raw("FIELD(grado,'Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.','Sof. My.','Sof. 1ro.','Sof. 2do.','Sof. Incl.','Sgto. 1ro.','Sgto. 2do.', 'Sgto. Incl.')"))->orderBy('egreso', 'asc')->orderBy('antiguedad', 'asc');			
 				}
 
 	    /*
@@ -263,7 +268,7 @@
 	    */
 	    public function hook_before_add(&$postdata) {        
 	        //Your code here
-			$postdata['gestion']=date('Y');
+			
 	    }
 
 	    /* 

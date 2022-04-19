@@ -2,8 +2,9 @@
 
 	use Session;
 	use Request;
-	use DB;
+	//use DB;
 	use CRUDBooster;
+	use Illuminate\Support\Facades\DB;
 
 	class AdminAddEECCController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -267,7 +268,8 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-	            $query->where('escalafon', 'EE.CC.')->orderBy('egreso', 'asc');
+	            $query->where('escalafon', 'EE.CC.')->orderByRaw(DB::raw("FIELD(grado,'ADM. V.;ADM. IV.;ADM. III.;ADM. II.;ADM. I.;APAD. V.;APAD. IV.;APAD. III.;APAD. II.;APAD. I.')"))->orderBy('egreso', 'asc');	
+
 	    }
 
 	    /*

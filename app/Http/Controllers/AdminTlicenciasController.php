@@ -2,16 +2,15 @@
 
 	use Session;
 	use Request;
-	//use DB;
+	use DB;
 	use CRUDBooster;
-	use Illuminate\Support\Facades\DB;
 
-	class AdminDestinosController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminTlicenciasController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "persona_id";
+			$this->title_field = "id";
 			$this->limit = "20";
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
@@ -26,33 +25,25 @@
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "destinos";
+			$this->table = "licencias";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Gestión","name"=>"gestion"];
-			$this->col[] = ["label"=>"Grado, Nombre y Apellido","name"=>"persona_id","join"=>"personas,nombre_completo"];
-			$this->col[] = ["label"=>"Distrito","name"=>"distrito"];
-			$this->col[] = ["label"=>"Cargo","name"=>"cargo"];
+			$this->col[] = ["label"=>"Dias","name"=>"dias"];
+			$this->col[] = ["label"=>"Descripcion","name"=>"descripcion"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			
-			$this->form[] = ['label' => 'Gestión', 'name' => 'gestion', 'value' => date('Y'), 'width' => 'col-sm-7'];
-			$this->form[] = ['label'=>'Grado, Nombre y Apellidos','name'=>'persona_id','type'=>'select2','validation'=>'required','width'=>'col-sm-7','datatable'=>'personas,nombre_completo'];
-			$this->form[] = ['label'=>'Distrito','name'=>'distrito','type'=>'select2','validation'=>'required','width'=>'col-sm-7','dataenum'=>'LA PAZ;SANTA CRUZ;COCHABAMBA;ORURO;TARIJA;POTOSI;SUCRE;TRINIDAD;COBIJA;YACUIBA;TUPIZA;CAMIRI;RIBERALTA;ACHACACHI;PUERTO SUAREZ;CARANAVI;CHULUMANI'];
-			$this->form[] = ['label'=>'Cargo','name'=>'cargo','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-7','dataenum'=>'JEFE DE DISTRITO;CAJERO;OPERADOR'];
+			$this->form[] = ['label'=>'Dias','name'=>'dias','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Descripcion','name'=>'descripcion','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Gestión','name'=>'gestion','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-7'];
-			//$this->form[] = ['label'=>'Grado, Nombre y Apellidos','name'=>'persona_id','type'=>'select2','validation'=>'required','width'=>'col-sm-7','datatable'=>'personas,nombre_completo'];
-			//$this->form[] = ['label'=>'Distrito','name'=>'distrito','type'=>'select2','validation'=>'required','width'=>'col-sm-7','dataenum'=>'CENTRAL;LA PAZ;SANTA CRUZ;COCHABAMBA;ORURO;TARIJA;POTOSI;SUCRE;TRINIDAD;COBIJA;YACUIBA;TUPIZA;CAMIRI;RIBERALTA;ACHACACHI;PUERTO SUAREZ;CARANAVI;CHULUMANI'];
-			//$this->form[] = ['label'=>'Departamento','name'=>'departamento','type'=>'select2','validation'=>'required','width'=>'col-sm-7','dataenum'=>'CMDO.; 2DO. CMDO.;DPTO. I - RR. HH.;DPTO. II - COMERC.;DPTO. III - OPS.;DPTO. IV - LOG.;DPTO. V - ADM.;DPTO. VI - CIA. Y TEC.;DPTO. VII - PLANIF.'];
-			//$this->form[] = ['label'=>'Cargo','name'=>'cargo','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-7','dataenum'=>'COMANDANTE; 2DO. COMANDANTE;JEFE DE DEPARTAMENTO;AUXILIAR;SECRETARIA;OPERADOR'];
+			//$this->form[] = ["label"=>"Dias","name"=>"dias","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Descripcion","name"=>"descripcion","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
 			# OLD END FORM
 
 			/* 
@@ -239,8 +230,8 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
-			//Your code here
-			$query->where('distrito','!=','CENTRAL')->where('gestion',date('Y'))->orderByRaw(DB::raw("FIELD(grado,'Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.','Sof. My.','Sof. 1ro.','Sof. 2do.','Sof. Incl.','Sgto. 1ro.','Sgto. 2do.', 'Sgto. Incl.')"))->orderBy('egreso', 'asc')->orderBy('antiguedad', 'asc');
+	        //Your code here
+	            
 	    }
 
 	    /*
@@ -260,9 +251,9 @@
 	    | @arr
 	    |
 	    */
-	    public function hook_before_add(&$postdata) {
-			//Your code here
-			$postdata['departamento'] = NULL;
+	    public function hook_before_add(&$postdata) {        
+	        //Your code here
+
 	    }
 
 	    /* 
