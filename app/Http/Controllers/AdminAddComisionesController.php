@@ -44,7 +44,7 @@
 			$this->form[] = ['label'=>'Tiempo','name'=>'tiempolicenciacomision','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-8'];
 			$this->form[] = ['label'=> 'Fecha de inicio de comisión','name'=>'f_desde','type'=>'date','validation'=>'required|date','width'=>'col-sm-8'];
 			$this->form[] = ['label'=>'Fecha de fin de comisión','name'=>'f_hasta','type'=>'date','validation'=>'required|date','width'=>'col-sm-8'];
-			$this->form[] = ['label'=>'Detalle','name'=>'motivo','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-8'];
+			$this->form[] = ['label'=>'Detalle','name'=>'motivo','type'=>'text','validation'=>'required','width'=>'col-sm-8'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
@@ -242,6 +242,7 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
+		$query-> where('motivo','like','Comisi%');	
 	            
 	    }
 

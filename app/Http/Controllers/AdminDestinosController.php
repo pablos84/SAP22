@@ -40,10 +40,10 @@
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 			
-			$this->form[] = ['label' => 'Gestión', 'name' => 'gestion', 'value' => date('Y'), 'width' => 'col-sm-7'];
+			$this->form[] = ['label' => 'Gestión', 'name' => 'gestion', 'value' => date('Y'), 'width' => 'col-sm-7', 'readonly' => 'true'];
 			$this->form[] = ['label'=>'Grado, Nombre y Apellidos','name'=>'persona_id','type'=>'select2','validation'=>'required','width'=>'col-sm-7','datatable'=>'personas,nombre_completo'];
 			$this->form[] = ['label'=>'Distrito','name'=>'distrito','type'=>'select2','validation'=>'required','width'=>'col-sm-7','dataenum'=>'LA PAZ;SANTA CRUZ;COCHABAMBA;ORURO;TARIJA;POTOSI;SUCRE;TRINIDAD;COBIJA;YACUIBA;TUPIZA;CAMIRI;RIBERALTA;ACHACACHI;PUERTO SUAREZ;CARANAVI;CHULUMANI'];
-			$this->form[] = ['label'=>'Cargo','name'=>'cargo','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-7','dataenum'=>'JEFE DE DISTRITO;CAJERO;OPERADOR'];
+			$this->form[] = ['label'=>'Cargo','name'=>'cargo','type'=>'select2','validation'=>'required','width'=>'col-sm-7','dataenum'=>'JEFE DE DISTRITO;CAJERO;OPERADOR'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
@@ -240,7 +240,7 @@
 	    */
 	    public function hook_query_index(&$query) {
 			//Your code here
-			$query->where('distrito','!=','CENTRAL')->where('gestion',date('Y'))->orderByRaw(DB::raw("FIELD(grado,'Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.','Sof. My.','Sof. 1ro.','Sof. 2do.','Sof. Incl.','Sgto. 1ro.','Sgto. 2do.', 'Sgto. Incl.')"))->orderBy('egreso', 'asc')->orderBy('antiguedad', 'asc');
+			$query->where('distrito','!=','CENTRAL')->where('gestion',date('Y'))->orderBy('distrito', 'asc')->orderByRaw(DB::raw("FIELD(grado,'Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.','Sof. My.','Sof. 1ro.','Sof. 2do.','Sof. Incl.','Sgto. 1ro.','Sgto. 2do.', 'Sgto. Incl.')"))->orderBy('egreso', 'asc')->orderBy('antiguedad', 'asc');
 	    }
 
 	    /*

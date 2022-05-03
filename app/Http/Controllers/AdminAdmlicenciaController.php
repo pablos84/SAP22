@@ -2,8 +2,9 @@
 
 	use Session;
 	use Request;
-	use DB;
+	//use DB;
 	use CRUDBooster;
+	use Illuminate\Support\Facades\DB;
 
 	class AdminAdmlicenciaController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -30,31 +31,30 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label" => "Persona Id", "name" => "persona_id", "join" => "personas,nombre_completo"];
-			$this->col[] = ["label" => "Motivo", "name" => "motivo"];
-			$this->col[] = ["label" => "Tiempo en dias", "name" => "tiempolicenciacomision"];
-			$this->col[] = ["label" => "Fecha de Salida", "name" => "f_desde"];
+			$this->col[] = ["label"=>"Persona Id","name"=>"persona_id","join"=>"personas,nombre_completo"];
+			$this->col[] = ["label"=>"Motivo","name"=>"motivo","join"=>"licencias,descripcion"];
+			$this->col[] = ["label"=>"Tiempo en dias","name"=>"tiempolicenciacomision"];
+			$this->col[] = ["label"=>"Fecha de Salida","name"=>"f_desde"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label' => 'Grado, Nombre y Apellido', 'name' => 'persona_id', 'type' => 'select2', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-8', 'datatable' => 'personas,nombre_completo'];
-			$this->form[] = ['label'=>'Fecha de Solicitud','name'=>'f_solicitud','type'=>'date','width'=>'col-sm-8', 'value'=>now()];
-			$this->form[] = ['label'=>'Motivo','name'=>'motivo','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-8','datatable'=>'licencias,descripcion'];
-			$this->form[] = ['label'=>'Tiempo de licencia','name'=>'tiempolicenciacomision','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-8'];
+			$this->form[] = ['label'=>'Grado, Nombre y Apellido','name'=>'persona_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','datatable'=>'personas,nombre_completo'];
+			$this->form[] = ['label'=>'Fecha de Solicitud','name'=>'f_solicitud','type'=>'date','width'=>'col-sm-8','value'=>now()];
+			$this->form[] = ['label'=>'Motivo','name'=>'motivo','type'=>'select2','validation'=>'required','width'=>'col-sm-8','datatable'=>'licencias,descripcion'];
+			$this->form[] = ['label'=>'Tiempo de licencia','name'=>'tiempolicenciacomision','type'=>'select2','width'=>'col-sm-8','datatable'=>'licencias,dias'];
 			$this->form[] = ['label'=>'Fecha de Salida','name'=>'f_desde','type'=>'date','validation'=>'required|date','width'=>'col-sm-8'];
 			$this->form[] = ['label'=>'Fecha de Retorno','name'=>'f_hasta','type'=>'date','validation'=>'required|date','width'=>'col-sm-8'];
-
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ["label"=>"Persona Id","name"=>"persona_id","type"=>"select2","required"=>TRUE,"validation"=>"required|min:1|max:255","datatable"=>"persona,id"];
-			//$this->form[] = ["label"=>"F Solicitud","name"=>"f_solicitud","type"=>"date","required"=>TRUE,"validation"=>"required|date"];
-			//$this->form[] = ["label"=>"Tiempolicenciacomision","name"=>"tiempolicenciacomision","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"F Desde","name"=>"f_desde","type"=>"date","required"=>TRUE,"validation"=>"required|date"];
-			//$this->form[] = ["label"=>"F Hasta","name"=>"f_hasta","type"=>"date","required"=>TRUE,"validation"=>"required|date"];
-			//$this->form[] = ["label"=>"Motivo","name"=>"motivo","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ['label'=>'Grado, Nombre y Apellido','name'=>'persona_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','datatable'=>'personas,nombre_completo'];
+			//$this->form[] = ['label'=>'Fecha de Solicitud','name'=>'f_solicitud','type'=>'date','width'=>'col-sm-8', 'value' => now()];
+			//$this->form[] = ['label'=>'Motivo','name'=>'motivo','type'=>'select2','validation'=>'required','width'=>'col-sm-8','datatable'=>'licencias,descripcion'];
+			//$this->form[] = ['label'=>'Tiempo de licencia','name'=>'tiempolicenciacomision','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-8','datatable'=>'licencias,dias'];
+			//$this->form[] = ['label'=>'Fecha de Salida','name'=>'f_desde','type'=>'date','validation'=>'required|date','width'=>'col-sm-8'];
+			//$this->form[] = ['label'=>'Fecha de Retorno','name'=>'f_hasta','type'=>'date','validation'=>'required|date','width'=>'col-sm-8'];
 			# OLD END FORM
 
 			/* 
@@ -241,8 +241,9 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
-	        //Your code here
-	            
+		//Your code here
+
+		$query-> where('motivo', 'NOT LIKE' ,'Comisi%');       
 	    }
 
 	    /*
@@ -262,8 +263,11 @@
 	    | @arr
 	    |
 	    */
-	    public function hook_before_add(&$postdata) {        
-	        //Your code here
+	    public function hook_before_add(&$postdata) {
+		//Your code here
+		$licencia = DB::table('licencias') -> where('id', 'like', $postdata['motivo'])->value ('dias');
+
+		$postdata['tiempolicenciacomision'] = $licencia;
 
 	    }
 

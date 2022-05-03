@@ -43,7 +43,7 @@
 			$this->form[] = ['label' => 'Gestión', 'name' => 'gestion', 'value' => date('Y'), 'width' => 'col-sm-7'];
 
 			$this->form[] = ['label' => 'Grado, Nombre y Apellidos', 'name' => 'persona_id', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'datatable' => 'personas,nombre_completo'];
-			$this->form[] = ['label' => 'Destino', 'name' => 'distrito', 'width' => 'col-sm-7','type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' =>  'CENTRAL;LA PAZ;SANTA CRUZ;COCHABAMBA;ORURO;TARIJA;POTOSI;SUCRE;TRINIDAD;COBIJA;YACUIBA;TUPIZA;CAMIRI;RIBERALTA;ACHACACHI;PUERTO SUAREZ;CARANAVI;CHULUMANI;OTRO'];
+			$this->form[] = ['label' => 'Destino', 'name' => 'distrito', 'width' => 'col-sm-7','type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' =>  'IGM-CENTRAL;IGM-LA PAZ;IGM-SANTA CRUZ;IGM-COCHABAMBA;IGM-ORURO;IGM-TARIJA;IGM-POTOSI;IGM-SUCRE;IGM-TRINIDAD;IGM-COBIJA;IGM-YACUIBA;IGM-TUPIZA;IGM-CAMIRI;IGM-RIBERALTA;IGM-ACHACACHI;IGM-PUERTO SUAREZ;IGM-CARANAVI;IGM-CHULUMANI;OTRO DESTINO'];
 
 			$this->form[] = ['label' => 'Observaciones', 'name' => 'departamento', 'type' => 'text', 'width' => 'col-sm-7'];
 

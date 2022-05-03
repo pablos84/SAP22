@@ -56,7 +56,7 @@
 			$this->form[] = ['label' => 'Celular', 'name' => 'celular', 'type' => 'number', 'validation' => 'required|integer|min:8', 'width' => 'col-sm-8'];
 			$this->form[] = ['label' => 'Celular2', 'name' => 'celular2', 'type' => 'number', 'validation' => 'required|integer|min:8', 'width' => 'col-sm-8'];
 			$this->form[] = ['label' => 'Email', 'name' => 'email', 'type' => 'email', 'validation' => 'required|min:1|max:255|email|unique:personas', 'width' => 'col-sm-8', 'placeholder' => 'Please enter a valid email address'];
-			$this->form[] = ['label' => 'Foto', 'name' => 'foto', 'type' => 'upload', 'validation' => 'required|image|max:3000', 'width' => 'col-sm-8', 'help' => 'File types support : JPG, JPEG, PNG, GIF, BMP'];
+			$this->form[] = ['label' => 'Foto', 'name' => 'foto', 'type' => 'upload', 'validation' => 'required|image|max:3000', 'width' => 'col-sm-8', 'help' => 'Tipos de archivos soportados : JPG, JPEG, PNG, GIF, BMP hasta 3 MB'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM

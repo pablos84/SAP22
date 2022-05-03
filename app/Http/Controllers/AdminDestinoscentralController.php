@@ -12,7 +12,7 @@
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
 			$this->title_field = "persona_id";
-			$this->limit = "20";
+			$this->limit = "50";
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
@@ -41,14 +41,14 @@
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 
-			$this->form[] = ['label' => 'Gestión', 'name' => 'gestion', 'value' => date('Y'), 'width' => 'col-sm-7'];
+			$this->form[] = ['label' => 'Gestión', 'name' => 'gestion', 'value' => date('Y'), 'width' => 'col-sm-7', 'readonly'=>'true'];
 
 			$this->form[] = ['label' => 'Grado, Nombre y Apellidos', 'name' => 'persona_id', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'datatable' => 'personas,nombre_completo'];
-			$this->form[] = ['label' => 'Distrito', 'name' => 'distrito', 'width' => 'col-sm-7', 'value' => 'CENTRAL'];
+			$this->form[] = ['label' => 'Distrito', 'name' => 'distrito', 'width' => 'col-sm-7', 'value' =>'CENTRAL', 'readonly' => 'true'];
 
 			$this->form[] = ['label' => 'Departamento', 'name' => 'departamento', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' => 'CMDO.; 2DO. CMDO.;DPTO. I - RR. HH.;DPTO. II - COMERC.;DPTO. III - OPS.;DPTO. IV - LOG.;DPTO. V - ADM.;DPTO. VI - CIA. Y TEC.;DPTO. VII - PLANIF.'];
 
-			$this->form[] = ['label' => 'Cargo', 'name' => 'cargo', 'type' => 'select2', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-7', 'dataenum' => 'COMANDANTE; 2DO. COMANDANTE;JEFE DE DEPARTAMENTO;AUXILIAR;CAJERO;SECRETARIA;OPERADOR'];
+			$this->form[] = ['label' => 'Cargo', 'name' => 'cargo', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' => 'COMANDANTE; 2DO. COMANDANTE;JEFE DE DEPARTAMENTO;AUXILIAR;CAJERO;SECRETARIA;OPERADOR'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
