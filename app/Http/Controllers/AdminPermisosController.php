@@ -2,62 +2,70 @@
 
 	use Session;
 	use Request;
-	//use DB;
+	use DB;
 	use CRUDBooster;
-	use Illuminate\Support\Facades\DB;
 
-	class AdminDestinosController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminPermisosController extends \crocodicstudio\crudbooster\controllers\CBController {
 
-	    public function cbInit() {
 
-			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "persona_id";
-			$this->limit = "20";
-			$this->orderby = "id,desc";
-			$this->global_privilege = false;
-			$this->button_table_action = true;
-			$this->button_bulk_action = true;
-			$this->button_action_style = "button_icon";
-			$this->button_add = true;
-			$this->button_edit = true;
-			$this->button_delete = true;
-			$this->button_detail = true;
-			$this->button_show = true;
-			$this->button_filter = true;
-			$this->button_import = false;
-			$this->button_export = false;
-			$this->table = "destinos";
-			# END CONFIGURATION DO NOT REMOVE THIS LINE
+	public function cbInit()
+	{
 
-			# START COLUMNS DO NOT REMOVE THIS LINE
-			$this->col = [];
-			$this->col[] = ["label"=>"Gestión","name"=>"gestion"];
-			$this->col[] = ["label"=>"Grado, Nombre y Apellido","name"=>"persona_id","join"=>"personas,nombre_completo"];
-			$this->col[] = ["label"=>"Distrito","name"=>"distrito"];
-			$this->col[] = ["label"=>"Cargo","name"=>"cargo"];
-			# END COLUMNS DO NOT REMOVE THIS LINE
+		# START CONFIGURATION DO NOT REMOVE THIS LINE
+		$this->title_field = "Nombre";
+		$this->limit = "20";
+		$this->orderby = "id,desc";
+		$this->global_privilege = false;
+		$this->button_table_action = true;
+		$this->button_bulk_action = true;
+		$this->button_action_style = "button_icon";
+		$this->button_add = true;
+		$this->button_edit = true;
+		$this->button_delete = true;
+		$this->button_detail = true;
+		$this->button_show = true;
+		$this->button_filter = true;
+		$this->button_import = false;
+		$this->button_export = true;
+		$this->table = "vacacions";
+		# END CONFIGURATION DO NOT REMOVE THIS LINE
 
-			# START FORM DO NOT REMOVE THIS LINE
-			$this->form = [];
-			
-			$this->form[] = ['label' => 'Gestión', 'name' => 'gestion', 'value' => date('Y'), 'width' => 'col-sm-7', 'readonly' => 'true'];
-			$this->form[] = ['label'=>'Grado, Nombre y Apellidos','name'=>'persona_id','type'=>'select2','validation'=>'required','width'=>'col-sm-7','datatable'=>'personas,nombre_completo'];
-			$this->form[] = ['label' => 'Destino', 'name' => 'distrito', 'width' => 'col-sm-7', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' =>  'LA PAZ;SANTA CRUZ;COCHABAMBA;ORURO;TARIJA;POTOSI;SUCRE;TRINIDAD;COBIJA;YACUIBA;TUPIZA;CAMIRI;RIBERALTA;ACHACACHI;PUERTO SUAREZ;CARANAVI;CHULUMANI'];
-			$this->form[] = ['label'=>'Cargo','name'=>'cargo','type'=>'select2','validation'=>'required','width'=>'col-sm-7','dataenum'=>'JEFE DE DISTRITO;CAJERO;OPERADOR'];
-			$this->form[] = ['label' => 'Especialización', 'name' => 'especializacion', 'type' => 'text', 'placeholder' => 'Capacitaciones y/o especializaciones recibidas durante la gestion'];
+		# START COLUMNS DO NOT REMOVE THIS LINE
+		$this->col = [];
+		$this->col[] = ["label" => "Persona Id", "name" => "persona_id", "join" => "personas,nombre_completo"];
+		$this->col[] = ["label" => "Años de Trabajo", "name" => "años_trabajo"];
+		$this->col[] = ["label" => "Dias Vacacion", "name" => "dias_vacacion"];
+		$this->col[] = ["label" => "Colectiva", "name" => "colectiva"];
+		$this->col[] = ["label" => "Fecha de Solicitud", "name" => "f_solicitud"];
+		$this->col[] = ["label" => "Dias Solicitados", "name" => "dias_solicitados"];
+		$this->col[] = ["label" => "Horas Solicitadas", "name" => "horas_solicitadas"];
+		$this->col[] = ["label" => "Desde", "name" => "f_desde"];
+		$this->col[] = ["label" => "Hasta", "name" => "f_hasta"];
+		$this->col[] = ["label" => "Dias Restantes", "name" => "dias_restantes"];
+		$this->col[] = ["label" => "Horas Restantes", "name" => "horas_restantes"];
+		# END COLUMNS DO NOT REMOVE THIS LINE
 
-			# END FORM DO NOT REMOVE THIS LINE
+		# START FORM DO NOT REMOVE THIS LINE
+		$this->form = [];
+		$this->form[] = ['label' => 'Grado, Nombre y Apellido', 'name' => 'persona_id', 'type' => 'select2', 'validation' => 'required|min:1|max:255', 'width' => 'col-sm-8', 'datatable' => 'personas,nombre_completo'];
+		$this->form[] = ['label' => 'Fecha de solicitud', 'name' => 'f_solicitud', 'type' => 'date', 'validation' => 'required|date', 'width' => 'col-sm-8', 'value' => now()];
+		$this->form[] = ['label' => 'Dias Solicitados', 'name' => 'dias_solicitados', 'type' => 'number', 'width' => 'col-sm-5', 'value' => 0];
+		$this->form[] = ['label' => 'Horas Solicitadas', 'name' => 'horas_solicitadas', 'type' => 'number', 'width' => 'col-sm-5', 'value' => 0];
+		$this->form[] = ['label' => 'Desde', 'name' => 'f_desde', 'type' => 'date', 'width' => 'col-sm-5', 'value' => now()];
+		$this->form[] = ['label' => 'Hasta', 'name' => 'f_hasta', 'type' => 'date', 'width' => 'col-sm-5', 'value' => now()];
+		# END FORM DO NOT REMOVE THIS LINE
 
-			# OLD START FORM
-			//$this->form = [];
-			//$this->form[] = ['label'=>'Gestión','name'=>'gestion','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-7'];
-			//$this->form[] = ['label'=>'Grado, Nombre y Apellidos','name'=>'persona_id','type'=>'select2','validation'=>'required','width'=>'col-sm-7','datatable'=>'personas,nombre_completo'];
-			//$this->form[] = ['label'=>'Distrito','name'=>'distrito','type'=>'select2','validation'=>'required','width'=>'col-sm-7','dataenum'=>'CENTRAL;LA PAZ;SANTA CRUZ;COCHABAMBA;ORURO;TARIJA;POTOSI;SUCRE;TRINIDAD;COBIJA;YACUIBA;TUPIZA;CAMIRI;RIBERALTA;ACHACACHI;PUERTO SUAREZ;CARANAVI;CHULUMANI'];
-			//$this->form[] = ['label'=>'Departamento','name'=>'departamento','type'=>'select2','validation'=>'required','width'=>'col-sm-7','dataenum'=>'CMDO.; 2DO. CMDO.;DPTO. I - RR. HH.;DPTO. II - COMERC.;DPTO. III - OPS.;DPTO. IV - LOG.;DPTO. V - ADM.;DPTO. VI - CIA. Y TEC.;DPTO. VII - PLANIF.'];
-			//$this->form[] = ['label'=>'Cargo','name'=>'cargo','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-7','dataenum'=>'COMANDANTE; 2DO. COMANDANTE;JEFE DE DEPARTAMENTO;AUXILIAR;SECRETARIA;OPERADOR'];
-			# OLD END FORM
+		# OLD START FORM
+		//$this->form = [];
+		//$this->form[] = ['label'=>'Grado, Nombre y Apellido','name'=>'persona_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','datatable'=>'personas,nombre_completo'];
+		//$this->form[] = ['label'=>'Fecha de solicitud','name'=>'f_solicitud','type'=>'date','value'=>now(),'validation'=>'required|date','width'=>'col-sm-8'];
+		//$this->form[] = ['label'=>'Dias Solicitados','name'=>'dias_solicitados','type'=>'number','width'=>'col-sm-5', 'value' => 0];
+		//$this->form[] = ['label'=>'Horas Solicitadas','name'=>'horas_solicitadas','type'=>'number','width'=>'col-sm-5', 'value' => 0];
+		//$this->form[] = ['label'=>'Desde','name'=>'f_desde','type'=>'date','width'=>'col-sm-5', 'value' => now()];
+		//$this->form[] = ['label'=>'Hasta','name'=>'f_hasta','type'=>'date','width'=>'col-sm-5'];
+		# OLD END FORM
 
-			/* 
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Sub Module
 	        | ----------------------------------------------------------------------     
@@ -69,10 +77,10 @@
 			| @parent_columns = Sparate with comma, e.g : name,created_at
 	        | 
 	        */
-	        $this->sub_module = array();
+		$this->sub_module = array();
 
 
-	        /* 
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Add More Action Button / Menu
 	        | ----------------------------------------------------------------------     
@@ -83,10 +91,10 @@
 	        | @showIf 	   = If condition when action show. Use field alias. e.g : [id] == 1
 	        | 
 	        */
-	        $this->addaction = array();
+		$this->addaction = array();
 
 
-	        /* 
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Add More Button Selected
 	        | ----------------------------------------------------------------------     
@@ -96,10 +104,10 @@
 	        | Then about the action, you should code at actionButtonSelected method 
 	        | 
 	        */
-	        $this->button_selected = array();
+		$this->button_selected = array();
 
-	                
-	        /* 
+
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Add alert message to this module at overheader
 	        | ----------------------------------------------------------------------     
@@ -107,11 +115,11 @@
 	        | @type    = warning,success,danger,info        
 	        | 
 	        */
-	        $this->alert        = array();
-	                
+		$this->alert        = array();
 
-	        
-	        /* 
+
+
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Add more button to header button 
 	        | ----------------------------------------------------------------------     
@@ -120,11 +128,9 @@
 	        | @icon  = Icon from Awesome.
 	        | 
 	        */
-	        $this->index_button = array();
+		$this->index_button = array();
 
-
-
-	        /* 
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Customize Table Row Color
 	        | ----------------------------------------------------------------------     
@@ -132,21 +138,18 @@
 	        | @color = Default is none. You can use bootstrap success,info,warning,danger,primary.        
 	        | 
 	        */
-	        $this->table_row_color = array();     	          
+		$this->table_row_color = array();
 
-	        
-	        /*
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | You may use this bellow array to add statistic at dashboard 
 	        | ---------------------------------------------------------------------- 
 	        | @label, @count, @icon, @color 
 	        |
 	        */
-	        $this->index_statistic = array();
+		$this->index_statistic = array();
 
-
-
-	        /*
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Add javascript at body 
 	        | ---------------------------------------------------------------------- 
@@ -154,10 +157,10 @@
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-	        $this->script_js = NULL;
+		$this->script_js = NULL;
 
 
-            /*
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Include HTML Code before index table 
 	        | ---------------------------------------------------------------------- 
@@ -165,11 +168,9 @@
 	        | $this->pre_index_html = "<p>test</p>";
 	        |
 	        */
-	        $this->pre_index_html = null;
-	        
-	        
-	        
-	        /*
+		$this->pre_index_html = null;
+
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Include HTML Code after index table 
 	        | ---------------------------------------------------------------------- 
@@ -177,11 +178,9 @@
 	        | $this->post_index_html = "<p>test</p>";
 	        |
 	        */
-	        $this->post_index_html = null;
-	        
-	        
-	        
-	        /*
+		$this->post_index_html = null;
+
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Include Javascript File 
 	        | ---------------------------------------------------------------------- 
@@ -189,11 +188,9 @@
 	        | $this->load_js[] = asset("myfile.js");
 	        |
 	        */
-	        $this->load_js = array();
-	        
-	        
-	        
-	        /*
+		$this->load_js = array();
+
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Add css style at body 
 	        | ---------------------------------------------------------------------- 
@@ -201,11 +198,11 @@
 	        | $this->style_css = ".style{....}";
 	        |
 	        */
-	        $this->style_css = NULL;
-	        
-	        
-	        
-	        /*
+		$this->style_css = NULL;
+
+
+
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Include css File 
 	        | ---------------------------------------------------------------------- 
@@ -213,13 +210,11 @@
 	        | $this->load_css[] = asset("myfile.css");
 	        |
 	        */
-	        $this->load_css = array();
-	        
-	        
-	    }
+		$this->load_css = array();
+	}
 
 
-	    /*
+	/*
 	    | ---------------------------------------------------------------------- 
 	    | Hook for button selected
 	    | ---------------------------------------------------------------------- 
@@ -227,10 +222,11 @@
 	    | @button_name = the name of button
 	    |
 	    */
-	    public function actionButtonSelected($id_selected,$button_name) {
-	        //Your code here
-	            
-	    }
+	public function actionButtonSelected($id_selected, $button_name)
+	{
+		//Your code here
+
+	}
 
 
 	/*
@@ -242,49 +238,107 @@
 	    */
 	public function hook_query_index(&$query)
 	{
+		//Your code here
 		if (
 			CRUDBooster::MyName() != 'Super Admin'
 		) {
 			$query->where('distrito', 'LIKE', CRUDBooster::MyName());
 		}
-		$query->where('gestion', date('Y'))->orderBy('distrito', 'asc')->orderByRaw(DB::raw("FIELD(grado,'Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.','Sof. My.','Sof. 1ro.','Sof. 2do.','Sof. Incl.','Sgto. 1ro.','Sgto. 2do.', 'Sgto. Incl.')"))->orderBy('egreso', 'asc')->orderBy('antiguedad', 'asc');
+		$query->where('gestion', date('Y'))->orderByRaw(DB::raw("FIELD(grado,'Gral. Brig.','Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.','Sof. My.','Sof. 1ro.','Sof. 2do.','Sof. Incl.','Sgto. 1ro.','Sgto. 2do.', 'Sgto. Incl.')"))->orderBy('egreso', 'asc')->orderBy('antiguedad', 'asc');
 	}
 
-	    /*
+	/*
 	    | ---------------------------------------------------------------------- 
 	    | Hook for manipulate row of index table html 
 	    | ---------------------------------------------------------------------- 
 	    |
-	    */    
-	    public function hook_row_index($column_index,&$column_value) {	        
-	    	//Your code here
-	    }
+	    */
+	public function hook_row_index($column_index, &$column_value)
+	{
+		//Your code here
+	}
 
-	    /*
+	/*
 	    | ---------------------------------------------------------------------- 
 	    | Hook for manipulate data input before add data is execute
 	    | ---------------------------------------------------------------------- 
 	    | @arr
 	    |
 	    */
-	    public function hook_before_add(&$postdata) {
-			//Your code here
-			$postdata['departamento'] = NULL;
-	    }
+	public function hook_before_add(&$postdata)
+	{
+		if ($postdata['dias_solicitados'] > 0) {
+			$postdata['situacion'] = 'PERMISO CUENTA VACACIÓN DESDE ' . $postdata['f_desde'] . ' HASTA ' . $postdata['f_hasta'];
+		} else {
+			$postdata['situacion'] = 'PERMISO CUENTA VACACIÓN POR ' . $postdata['horas_solicitadas'] . ' HORAS';
+		};
+		
+		$postdata['gestion'] = date('Y');
+		$postdata['distrito'] = DB::table('destinos')->where('persona_id', $postdata['persona_id'])->value('distrito');
+		//busca año de egreso segun persona id y calcula años de antiguedad 
+		// ->where('gestion', $postdata['gestion'])
 
-	    /* 
+		$egreso = DB::table('personas')->where('id', $postdata['persona_id'])->value('egreso');
+		$postdata['años_trabajo'] = $postdata['gestion'] - $egreso;
+
+		//busca tiempo de vacacion segun años de antiguedad, muestra dias de vacacion
+
+		$t_vacacion = DB::table('t_vacacions')->whereRaw('desde <= ? and hasta >= ?', [$postdata['años_trabajo'], $postdata['años_trabajo']])->value('t_vacacion');
+
+		$postdata['dias_vacacion'] = $t_vacacion;
+
+		if (DB::table('vacacions')->where('persona_id', $postdata['persona_id'])->exists() == 0) {
+			$postdata['colectiva'] = 5;
+
+			$postdata['dias_restantes'] = $postdata['dias_vacacion'] - $postdata['dias_solicitados'] - $postdata['colectiva'];
+
+			if ($postdata['horas_solicitadas'] > 0) {
+				$postdata['horas_restantes'] = 8 - $postdata['horas_solicitadas'];
+				$postdata['dias_restantes'] = $postdata['dias_restantes'] - 1;
+			};
+		} else {
+
+			$dato = DB::table('vacacions')->where('persona_id', $postdata['persona_id'])->max('id');
+			$id = DB::table('vacacions')->find($dato);
+			$postdata['colectiva'] = 5;
+			$dias_restantes = $id->dias_restantes;
+			$horas_restantes = $id->horas_restantes;
+
+			$postdata['dias_restantes'] = $dias_restantes - $postdata['dias_solicitados'];
+			$postdata['horas_restantes'] = $horas_restantes;
+
+			if ($postdata['horas_solicitadas'] > 0) {
+
+				$postdata['horas_restantes'] = $horas_restantes - $postdata['horas_solicitadas'];
+
+				if ($postdata['horas_restantes'] < 0) {
+					$postdata['dias_restantes'] = $postdata['dias_restantes'] - 1;
+					$postdata['horas_restantes'] = 8 + $postdata['horas_restantes'];
+				}
+			}
+		}
+		if ($postdata['dias_restantes'] < 0) {
+			$postdata['colectiva'] = $postdata['colectiva'] - abs($postdata['dias_restantes']);
+			$postdata['dias_restantes'] = 0;
+		} else {
+			$postdata['colectiva'] = 5;
+		}
+	}
+
+	/* 
 	    | ---------------------------------------------------------------------- 
 	    | Hook for execute command after add public static function called 
 	    | ---------------------------------------------------------------------- 
 	    | @id = last insert id
 	    | 
 	    */
-	    public function hook_after_add($id) {        
-	        //Your code here
+	public function hook_after_add($persona_id)
+	{
+		//Your code here
 
-	    }
+	}
 
-	    /* 
+	/* 
 	    | ---------------------------------------------------------------------- 
 	    | Hook for manipulate data input before update data is execute
 	    | ---------------------------------------------------------------------- 
@@ -292,50 +346,54 @@
 	    | @id       = current id 
 	    | 
 	    */
-	    public function hook_before_edit(&$postdata,$id) {        
-	        //Your code here
+	public function hook_before_edit(&$postdata, $id)
+	{
+		//Your code here
 
-	    }
+	}
 
-	    /* 
+	/* 
 	    | ---------------------------------------------------------------------- 
 	    | Hook for execute command after edit public static function called
 	    | ----------------------------------------------------------------------     
 	    | @id       = current id 
 	    | 
 	    */
-	    public function hook_after_edit($id) {
-	        //Your code here 
+	public function hook_after_edit($id)
+	{
+		//Your code here 
 
-	    }
+	}
 
-	    /* 
+	/* 
 	    | ---------------------------------------------------------------------- 
 	    | Hook for execute command before delete public static function called
 	    | ----------------------------------------------------------------------     
 	    | @id       = current id 
 	    | 
 	    */
-	    public function hook_before_delete($id) {
-	        //Your code here
+	public function hook_before_delete($id)
+	{
+		//Your code here
 
-	    }
+	}
 
-	    /* 
+	/* 
 	    | ---------------------------------------------------------------------- 
 	    | Hook for execute command after delete public static function called
 	    | ----------------------------------------------------------------------     
 	    | @id       = current id 
 	    | 
 	    */
-	    public function hook_after_delete($id) {
-	        //Your code here
-
-	    }
-
-
-
-	    //By the way, you can still create your own method in here... :) 
-
+	public function hook_after_delete($id)
+	{
+		//Your code here
 
 	}
+
+
+
+	//By the way, you can still create your own method in here... :) 
+
+
+}

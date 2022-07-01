@@ -1,70 +1,65 @@
 <?php namespace App\Http\Controllers;
 
-	use Session;
-	use Request;
-	//use DB;
-	use CRUDBooster;
-	use Illuminate\Support\Facades\DB;
-
-	class AdminDestinoscentralController extends \crocodicstudio\crudbooster\controllers\CBController {
-
-	    public function cbInit() {
-
-			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "persona_id";
-			$this->limit = "50";
-			$this->orderby = "id,desc";
-			$this->global_privilege = false;
-			$this->button_table_action = true;
-			$this->button_bulk_action = true;
-			$this->button_action_style = "button_icon";
-			$this->button_add = true;
-			$this->button_edit = true;
-			$this->button_delete = true;
-			$this->button_detail = true;
-			$this->button_show = true;
-			$this->button_filter = true;
-			$this->button_import = false;
-			$this->button_export = false;
-			$this->table = "destinos";
-			# END CONFIGURATION DO NOT REMOVE THIS LINE
-
-			# START COLUMNS DO NOT REMOVE THIS LINE
-			$this->col = [];
-			$this->col[] = ["label"=>"Gestion","name"=>"gestion"];
-			$this->col[] = ["label"=>"Grado, Nombre y Apellidos","name"=>"persona_id","join"=>"personas,nombre_completo"];
-			$this->col[] = ["label"=>"Distrito","name"=>"distrito"];
-			$this->col[] = ["label"=>"Departamento","name"=>"departamento"];
-			$this->col[] = ["label"=>"Cargo","name"=>"cargo"];
-			# END COLUMNS DO NOT REMOVE THIS LINE
-
-			# START FORM DO NOT REMOVE THIS LINE
-			$this->form = [];
-
-			$this->form[] = ['label' => 'Gestión', 'name' => 'gestion', 'value' => date('Y'), 'width' => 'col-sm-7', 'readonly'=>'true'];
-
-			$this->form[] = ['label' => 'Grado, Nombre y Apellidos', 'name' => 'persona_id', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'datatable' => 'personas,nombre_completo'];
-			$this->form[] = ['label' => 'Distrito', 'name' => 'distrito', 'width' => 'col-sm-7', 'value' =>'CENTRAL', 'readonly' => 'true'];
-
-			$this->form[] = ['label' => 'Departamento', 'name' => 'departamento', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' => 'CMDO.; 2DO. CMDO.;DPTO. I - RR. HH.;DPTO. II - COMERC.;DPTO. III - OPS.;DPTO. IV - LOG.;DPTO. V - ADM.;DPTO. VI - CIA. Y TEC.;DPTO. VII - PLANIF.'];
-
-			$this->form[] = ['label' => 'Cargo', 'name' => 'cargo', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' => 'COMANDANTE;SEGUNDO COMANDANTE;JEFE DE DEPARTAMENTO;JEFE DE SECCION;AUXILIAR;CAJERO;SECRETARIA;OPERADOR'];
-
-			$this->form[] = ['label' => 'Especialización', 'name' => 'especializacion', 'type' => 'text', 'placeholder' => 'Capacitaciones y/o especializaciones recibidas durante la gestion'];
+use Session;
+use Request;
+//use DB;
+use CRUDBooster;
+use Illuminate\Support\Facades\DB;
 
 
-			# END FORM DO NOT REMOVE THIS LINE
+	class AdminDestinosditritosController extends \crocodicstudio\crudbooster\controllers\CBController {
 
-			# OLD START FORM
-			//$this->form = [];
-			//$this->form[] = ["label"=>"Persona Id","name"=>"persona_id","type"=>"select2","required"=>TRUE,"validation"=>"required|min:1|max:255","datatable"=>"persona,id"];
-			//$this->form[] = ["label"=>"Gestion","name"=>"gestion","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
-			//$this->form[] = ["label"=>"Distrito","name"=>"distrito","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Departamento","name"=>"departamento","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			//$this->form[] = ["label"=>"Cargo","name"=>"cargo","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
-			# OLD END FORM
+	public function cbInit()
+	{
 
-			/* 
+		# START CONFIGURATION DO NOT REMOVE THIS LINE
+		$this->title_field = "persona_id";
+		$this->limit = "20";
+		$this->orderby = "id,desc";
+		$this->global_privilege = false;
+		$this->button_table_action = true;
+		$this->button_bulk_action = true;
+		$this->button_action_style = "button_icon";
+		$this->button_add = true;
+		$this->button_edit = true;
+		$this->button_delete = true;
+		$this->button_detail = true;
+		$this->button_show = true;
+		$this->button_filter = true;
+		$this->button_import = false;
+		$this->button_export = false;
+		$this->table = "destinos";
+		# END CONFIGURATION DO NOT REMOVE THIS LINE
+
+		# START COLUMNS DO NOT REMOVE THIS LINE
+		$this->col = [];
+		$this->col[] = ["label" => "Gestión", "name" => "gestion"];
+		$this->col[] = ["label" => "Grado, Nombre y Apellido", "name" => "persona_id", "join" => "personas,nombre_completo"];
+		$this->col[] = ["label" => "Distrito", "name" => "distrito"];
+		$this->col[] = ["label" => "Cargo", "name" => "cargo"];
+		# END COLUMNS DO NOT REMOVE THIS LINE
+
+		# START FORM DO NOT REMOVE THIS LINE
+		$this->form = [];
+
+		$this->form[] = ['label' => 'Gestión', 'name' => 'gestion', 'value' => date('Y'), 'width' => 'col-sm-7', 'readonly' => 'true'];
+		$this->form[] = ['label' => 'Grado, Nombre y Apellidos', 'name' => 'persona_id', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'datatable' => 'personas,nombre_completo'];
+		$this->form[] = ['label' => 'Destino', 'name' => 'distrito', 'width' => 'col-sm-7', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' =>  'LA PAZ;SANTA CRUZ;COCHABAMBA;ORURO;TARIJA;POTOSI;SUCRE;TRINIDAD;COBIJA;YACUIBA;TUPIZA;CAMIRI;RIBERALTA;ACHACACHI;PUERTO SUAREZ;CARANAVI;CHULUMANI'];
+		$this->form[] = ['label' => 'Cargo', 'name' => 'cargo', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' => 'JEFE DE DISTRITO;CAJERO;OPERADOR'];
+		$this->form[] = ['label' => 'Especialización', 'name' => 'especializacion', 'type' => 'text', 'placeholder' => 'Capacitaciones y/o especializaciones recibidas durante la gestion'];
+
+		# END FORM DO NOT REMOVE THIS LINE
+
+		# OLD START FORM
+		//$this->form = [];
+		//$this->form[] = ['label'=>'Gestión','name'=>'gestion','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-7'];
+		//$this->form[] = ['label'=>'Grado, Nombre y Apellidos','name'=>'persona_id','type'=>'select2','validation'=>'required','width'=>'col-sm-7','datatable'=>'personas,nombre_completo'];
+		//$this->form[] = ['label'=>'Distrito','name'=>'distrito','type'=>'select2','validation'=>'required','width'=>'col-sm-7','dataenum'=>'CENTRAL;LA PAZ;SANTA CRUZ;COCHABAMBA;ORURO;TARIJA;POTOSI;SUCRE;TRINIDAD;COBIJA;YACUIBA;TUPIZA;CAMIRI;RIBERALTA;ACHACACHI;PUERTO SUAREZ;CARANAVI;CHULUMANI'];
+		//$this->form[] = ['label'=>'Departamento','name'=>'departamento','type'=>'select2','validation'=>'required','width'=>'col-sm-7','dataenum'=>'CMDO.; 2DO. CMDO.;DPTO. I - RR. HH.;DPTO. II - COMERC.;DPTO. III - OPS.;DPTO. IV - LOG.;DPTO. V - ADM.;DPTO. VI - CIA. Y TEC.;DPTO. VII - PLANIF.'];
+		//$this->form[] = ['label'=>'Cargo','name'=>'cargo','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-7','dataenum'=>'COMANDANTE; 2DO. COMANDANTE;JEFE DE DEPARTAMENTO;AUXILIAR;SECRETARIA;OPERADOR'];
+		# OLD END FORM
+
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Sub Module
 	        | ----------------------------------------------------------------------     
@@ -76,10 +71,10 @@
 			| @parent_columns = Sparate with comma, e.g : name,created_at
 	        | 
 	        */
-	        $this->sub_module = array();
+		$this->sub_module = array();
 
 
-	        /* 
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Add More Action Button / Menu
 	        | ----------------------------------------------------------------------     
@@ -90,10 +85,10 @@
 	        | @showIf 	   = If condition when action show. Use field alias. e.g : [id] == 1
 	        | 
 	        */
-	        $this->addaction = array();
+		$this->addaction = array();
 
 
-	        /* 
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Add More Button Selected
 	        | ----------------------------------------------------------------------     
@@ -103,10 +98,10 @@
 	        | Then about the action, you should code at actionButtonSelected method 
 	        | 
 	        */
-	        $this->button_selected = array();
+		$this->button_selected = array();
 
-	                
-	        /* 
+
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Add alert message to this module at overheader
 	        | ----------------------------------------------------------------------     
@@ -114,11 +109,11 @@
 	        | @type    = warning,success,danger,info        
 	        | 
 	        */
-	        $this->alert        = array();
-	                
+		$this->alert        = array();
 
-	        
-	        /* 
+
+
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Add more button to header button 
 	        | ----------------------------------------------------------------------     
@@ -127,11 +122,11 @@
 	        | @icon  = Icon from Awesome.
 	        | 
 	        */
-	        $this->index_button = array();
+		$this->index_button = array();
 
 
 
-	        /* 
+		/* 
 	        | ---------------------------------------------------------------------- 
 	        | Customize Table Row Color
 	        | ----------------------------------------------------------------------     
@@ -139,21 +134,21 @@
 	        | @color = Default is none. You can use bootstrap success,info,warning,danger,primary.        
 	        | 
 	        */
-	        $this->table_row_color = array();     	          
+		$this->table_row_color = array();
 
-	        
-	        /*
+
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | You may use this bellow array to add statistic at dashboard 
 	        | ---------------------------------------------------------------------- 
 	        | @label, @count, @icon, @color 
 	        |
 	        */
-	        $this->index_statistic = array();
+		$this->index_statistic = array();
 
 
 
-	        /*
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Add javascript at body 
 	        | ---------------------------------------------------------------------- 
@@ -161,10 +156,10 @@
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-	        $this->script_js = NULL;
+		$this->script_js = NULL;
 
 
-            /*
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Include HTML Code before index table 
 	        | ---------------------------------------------------------------------- 
@@ -172,11 +167,11 @@
 	        | $this->pre_index_html = "<p>test</p>";
 	        |
 	        */
-	        $this->pre_index_html = null;
-	        
-	        
-	        
-	        /*
+		$this->pre_index_html = null;
+
+
+
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Include HTML Code after index table 
 	        | ---------------------------------------------------------------------- 
@@ -184,11 +179,11 @@
 	        | $this->post_index_html = "<p>test</p>";
 	        |
 	        */
-	        $this->post_index_html = null;
-	        
-	        
-	        
-	        /*
+		$this->post_index_html = null;
+
+
+
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Include Javascript File 
 	        | ---------------------------------------------------------------------- 
@@ -196,11 +191,11 @@
 	        | $this->load_js[] = asset("myfile.js");
 	        |
 	        */
-	        $this->load_js = array();
-	        
-	        
-	        
-	        /*
+		$this->load_js = array();
+
+
+
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Add css style at body 
 	        | ---------------------------------------------------------------------- 
@@ -208,11 +203,11 @@
 	        | $this->style_css = ".style{....}";
 	        |
 	        */
-	        $this->style_css = NULL;
-	        
-	        
-	        
-	        /*
+		$this->style_css = NULL;
+
+
+
+		/*
 	        | ---------------------------------------------------------------------- 
 	        | Include css File 
 	        | ---------------------------------------------------------------------- 
@@ -220,13 +215,11 @@
 	        | $this->load_css[] = asset("myfile.css");
 	        |
 	        */
-	        $this->load_css = array();
-	        
-	        
-	    }
+		$this->load_css = array();
+	}
 
 
-	    /*
+	/*
 	    | ---------------------------------------------------------------------- 
 	    | Hook for button selected
 	    | ---------------------------------------------------------------------- 
@@ -234,60 +227,63 @@
 	    | @button_name = the name of button
 	    |
 	    */
-	    public function actionButtonSelected($id_selected,$button_name) {
-	        //Your code here
-	            
-	    }
+	public function actionButtonSelected($id_selected, $button_name)
+	{
+		//Your code here
+
+	}
 
 
-	    /*
+	/*
 	    | ---------------------------------------------------------------------- 
 	    | Hook for manipulate query of index result 
 	    | ---------------------------------------------------------------------- 
 	    | @query = current sql query 
 	    |
 	    */
-	    public function hook_query_index(&$query) {
-				//Your code here
-				
-				$query->where('distrito','CENTRAL')-> where ('gestion', date('Y'))->orderByRaw(DB::raw("FIELD(grado,'Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.','Sof. My.','Sof. 1ro.','Sof. 2do.','Sof. Incl.','Sgto. 1ro.','Sgto. 2do.', 'Sgto. Incl.')"))->orderBy('egreso', 'asc')->orderBy('antiguedad', 'asc');			
-				}
+	public function hook_query_index(&$query)
+	{
+		$query->where('distrito', '!=', 'CENTRAL')->where('gestion', date('Y'))->orderBy('distrito', 'asc')->orderByRaw(DB::raw("FIELD(grado,'Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.','Sof. My.','Sof. 1ro.','Sof. 2do.','Sof. Incl.','Sgto. 1ro.','Sgto. 2do.', 'Sgto. Incl.')"))->orderBy('egreso', 'asc')->orderBy('antiguedad', 'asc');
+	}
 
-	    /*
+	/*
 	    | ---------------------------------------------------------------------- 
 	    | Hook for manipulate row of index table html 
 	    | ---------------------------------------------------------------------- 
 	    |
-	    */    
-	    public function hook_row_index($column_index,&$column_value) {	        
-	    	//Your code here
-	    }
+	    */
+	public function hook_row_index($column_index, &$column_value)
+	{
+		//Your code here
+	}
 
-	    /*
+	/*
 	    | ---------------------------------------------------------------------- 
 	    | Hook for manipulate data input before add data is execute
 	    | ---------------------------------------------------------------------- 
 	    | @arr
 	    |
 	    */
-	    public function hook_before_add(&$postdata) {        
-	        //Your code here
-			
-	    }
+	public function hook_before_add(&$postdata)
+	{
+		//Your code here
+		$postdata['departamento'] = NULL;
+	}
 
-	    /* 
+	/* 
 	    | ---------------------------------------------------------------------- 
 	    | Hook for execute command after add public static function called 
 	    | ---------------------------------------------------------------------- 
 	    | @id = last insert id
 	    | 
 	    */
-	    public function hook_after_add($id) {        
-	        //Your code here
+	public function hook_after_add($id)
+	{
+		//Your code here
 
-	    }
+	}
 
-	    /* 
+	/* 
 	    | ---------------------------------------------------------------------- 
 	    | Hook for manipulate data input before update data is execute
 	    | ---------------------------------------------------------------------- 
@@ -295,50 +291,54 @@
 	    | @id       = current id 
 	    | 
 	    */
-	    public function hook_before_edit(&$postdata,$id) {        
-	        //Your code here
+	public function hook_before_edit(&$postdata, $id)
+	{
+		//Your code here
 
-	    }
+	}
 
-	    /* 
+	/* 
 	    | ---------------------------------------------------------------------- 
 	    | Hook for execute command after edit public static function called
 	    | ----------------------------------------------------------------------     
 	    | @id       = current id 
 	    | 
 	    */
-	    public function hook_after_edit($id) {
-	        //Your code here 
+	public function hook_after_edit($id)
+	{
+		//Your code here 
 
-	    }
+	}
 
-	    /* 
+	/* 
 	    | ---------------------------------------------------------------------- 
 	    | Hook for execute command before delete public static function called
 	    | ----------------------------------------------------------------------     
 	    | @id       = current id 
 	    | 
 	    */
-	    public function hook_before_delete($id) {
-	        //Your code here
+	public function hook_before_delete($id)
+	{
+		//Your code here
 
-	    }
+	}
 
-	    /* 
+	/* 
 	    | ---------------------------------------------------------------------- 
 	    | Hook for execute command after delete public static function called
 	    | ----------------------------------------------------------------------     
 	    | @id       = current id 
 	    | 
 	    */
-	    public function hook_after_delete($id) {
-	        //Your code here
-
-	    }
-
-
-
-	    //By the way, you can still create your own method in here... :) 
-
+	public function hook_after_delete($id)
+	{
+		//Your code here
 
 	}
+
+
+
+	//By the way, you can still create your own method in here... :) 
+
+
+}

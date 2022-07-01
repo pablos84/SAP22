@@ -33,36 +33,35 @@
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
 			$this->col[] = ["label"=>"Persona Id","name"=>"persona_id","join"=>"personas,nombre_completo"];
-			//$this->col[] = ["label"=>"Gestión","name"=>"gestion"];
 			$this->col[] = ["label"=>"Años de Trabajo","name"=>"años_trabajo"];
 			$this->col[] = ["label"=>"Dias Vacacion","name"=>"dias_vacacion"];
 			$this->col[] = ["label"=>"Colectiva","name"=>"colectiva"];
 			$this->col[] = ["label"=>"Fecha de Solicitud","name"=>"f_solicitud"];
 			$this->col[] = ["label"=>"Dias Solicitados","name"=>"dias_solicitados"];
 			$this->col[] = ["label"=>"Horas Solicitadas","name"=>"horas_solicitadas"];
-			$this->col[] = ["label"=>"Desde", "name" => "f_desde"];
-			$this->col[] = ["label"=>"Hasta", "name" => "f_hasta"];
+			$this->col[] = ["label"=>"Desde","name"=>"f_desde"];
+			$this->col[] = ["label"=>"Hasta","name"=>"f_hasta"];
 			$this->col[] = ["label"=>"Dias Restantes","name"=>"dias_restantes"];
 			$this->col[] = ["label"=>"Horas Restantes","name"=>"horas_restantes"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Grado, Nombre y Apellido','name'=>'persona_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','datatable'=>'personas,nombre_completo'];
-			$this->form[] = ['label'=>'Fecha de solicitud','name'=>'f_solicitud','type'=>'date','value'=>now(),'validation'=>'required|date','width'=>'col-sm-8'];
-			$this->form[] = ['label'=>'Dias Solicitados','name'=>'dias_solicitados','type'=>'number','width'=>'col-sm-5', 'value' => 0];
-			$this->form[] = ['label'=>'Horas Solicitadas','name'=>'horas_solicitadas','type'=>'number','width'=>'col-sm-5', 'value' => 0];
+			$this->form[] = ['label'=>'Grado, Nombre y Apellido','name'=>'persona_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','datatable'=>'personas,nombre_completo'];	
+			$this->form[] = ['label'=>'Fecha de solicitud','name'=>'f_solicitud','type'=>'date','validation'=>'required|date','width'=>'col-sm-8', 'value' => now()];
+			$this->form[] = ['label'=>'Dias Solicitados','name'=>'dias_solicitados','type'=>'number','width'=>'col-sm-5', 'value'=>0];
+			$this->form[] = ['label'=>'Horas Solicitadas','name'=>'horas_solicitadas','type'=>'number','width'=>'col-sm-5','value'=>0];
 			$this->form[] = ['label'=>'Desde','name'=>'f_desde','type'=>'date','width'=>'col-sm-5', 'value' => now()];
-			$this->form[] = ['label'=>'Hasta','name'=>'f_hasta','type'=>'date','width'=>'col-sm-5'];
+			$this->form[] = ['label'=>'Hasta','name'=>'f_hasta','type'=>'date','width'=>'col-sm-5', 'value' => now()];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
 			//$this->form[] = ['label'=>'Grado, Nombre y Apellido','name'=>'persona_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','datatable'=>'personas,nombre_completo'];
-			//$this->form[] = ['label'=>'Fecha de solicitud','name'=>'f_solicitud','type'=>'date','value'=> now(),'validation'=>'required|date','width'=>'col-sm-8'];
-			//$this->form[] = ['label'=>'Dias Solicitados','name'=>'dias_solicitados','type'=>'number','width'=>'col-sm-5','value'=>0];
+			//$this->form[] = ['label'=>'Fecha de solicitud','name'=>'f_solicitud','type'=>'date','value'=>now(),'validation'=>'required|date','width'=>'col-sm-8'];
+			//$this->form[] = ['label'=>'Dias Solicitados','name'=>'dias_solicitados','type'=>'number','width'=>'col-sm-5', 'value' => 0];
 			//$this->form[] = ['label'=>'Horas Solicitadas','name'=>'horas_solicitadas','type'=>'number','width'=>'col-sm-5', 'value' => 0];
-			//$this->form[] = ['label'=>'Desde','name'=>'f_desde','type'=>'date','width'=>'col-sm-5'];
+			//$this->form[] = ['label'=>'Desde','name'=>'f_desde','type'=>'date','width'=>'col-sm-5', 'value' => now()];
 			//$this->form[] = ['label'=>'Hasta','name'=>'f_hasta','type'=>'date','width'=>'col-sm-5'];
 			# OLD END FORM
 
@@ -231,17 +230,20 @@
 	    }
 
 
-	    /*
+	/*
 	    | ---------------------------------------------------------------------- 
 	    | Hook for manipulate query of index result 
 	    | ---------------------------------------------------------------------- 
 	    | @query = current sql query 
 	    |
 	    */
-	    public function hook_query_index(&$query) {
-	        //Your code here
-	            
-	    }
+	public function hook_query_index(&$query)
+	{
+		if (CRUDBooster::MyName() != 'Super Admin') {
+			$query->where('distrito', 'LIKE', CRUDBooster::MyName());
+		}
+		$query->where('gestion', date('Y'))->orderByRaw(DB::raw("FIELD(grado,'Gral. Brig.','Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.','Sof. My.','Sof. 1ro.','Sof. 2do.','Sof. Incl.','Sgto. 1ro.','Sgto. 2do.', 'Sgto. Incl.')"))->orderBy('egreso', 'asc')->orderBy('antiguedad', 'asc');
+	}
 
 	    /*
 	    | ---------------------------------------------------------------------- 
@@ -253,64 +255,68 @@
 	    	//Your code here
 	    }
 
-	    /*
+	/*
 	    | ---------------------------------------------------------------------- 
 	    | Hook for manipulate data input before add data is execute
 	    | ---------------------------------------------------------------------- 
 	    | @arr
 	    |
 	    */
-	    public function hook_before_add(&$postdata) {
-		//Your code here
+	public function hook_before_add(&$postdata)
+	{
+		$postdata['situacion'] = 'VACACION ANUAL DESDE '. $postdata['f_desde'] .' HASTA '. $postdata['f_hasta'];
 
-			$postdata['gestion'] = date('Y');
+		$postdata['gestion'] = date('Y');
+		$postdata['distrito'] =DB::table('destinos')->where('persona_id', $postdata['persona_id'])->value('distrito');
+		//busca año de egreso segun persona id y calcula años de antiguedad 
+		// ->where('gestion', $postdata['gestion'])
 
-		//busca año de egreso segun persona id y calcula años de antiguedad
-
-			$egreso = DB::table('personas')->where('id',$postdata['persona_id'])->value('egreso');
-			$postdata['años_trabajo'] = $postdata['gestion'] - $egreso;
+		$egreso = DB::table('personas')->where('id', $postdata['persona_id'])->value('egreso');
+		$postdata['años_trabajo'] = $postdata['gestion'] - $egreso;
 
 		//busca tiempo de vacacion segun años de antiguedad, muestra dias de vacacion
 
-			$t_vacacion = DB::table('t_vacacions')->whereRaw('desde <= ? and hasta >= ?', [$postdata['años_trabajo'], $postdata['años_trabajo']])->value('t_vacacion');
-			
-			$postdata['dias_vacacion'] = $t_vacacion;
+		$t_vacacion = DB::table('t_vacacions')->whereRaw('desde <= ? and hasta >= ?', [$postdata['años_trabajo'], $postdata['años_trabajo']])->value('t_vacacion');
 
-			if (DB::table('vacacions')->where('persona_id', $postdata['persona_id'])->exists() == 0){
-				$postdata['colectiva'] = 5;
+		$postdata['dias_vacacion'] = $t_vacacion;
 
-				$postdata['dias_restantes'] = $postdata['dias_vacacion'] - $postdata['dias_solicitados'] - $postdata['colectiva'];
+		if (DB::table('vacacions')->where('persona_id', $postdata['persona_id'])->exists() == 0) {
+			$postdata['colectiva'] = 5;
 
-				if ($postdata['horas_solicitadas'] > 0) {
-					$postdata['horas_restantes'] = 8 - $postdata['horas_solicitadas'];
+			$postdata['dias_restantes'] = $postdata['dias_vacacion'] - $postdata['dias_solicitados'] - $postdata['colectiva'];
+
+			if ($postdata['horas_solicitadas'] > 0) {
+				$postdata['horas_restantes'] = 8 - $postdata['horas_solicitadas'];
+				$postdata['dias_restantes'] = $postdata['dias_restantes'] - 1;
+			};
+		} else {
+
+			$dato = DB::table('vacacions')->where('persona_id', $postdata['persona_id'])->max('id');
+			$id = DB::table('vacacions')->find($dato);
+			$postdata['colectiva'] = 5;
+			$dias_restantes = $id->dias_restantes;
+			$horas_restantes = $id->horas_restantes;
+
+			$postdata['dias_restantes'] = $dias_restantes - $postdata['dias_solicitados'];
+			$postdata['horas_restantes'] = $horas_restantes;
+
+			if ($postdata['horas_solicitadas'] > 0) {
+
+				$postdata['horas_restantes'] = $horas_restantes - $postdata['horas_solicitadas'];
+
+				if ($postdata['horas_restantes'] < 0) {
 					$postdata['dias_restantes'] = $postdata['dias_restantes'] - 1;
-				};				
+					$postdata['horas_restantes'] = 8 + $postdata['horas_restantes'];
+				}
 			}
-
-			else {
-
-				$dato = DB::table('vacacions')->where('persona_id',$postdata['persona_id'])->max('id');
-				$id = DB::table('vacacions')->find($dato);
-				
-				$postdata['colectiva'] = 5;
-
-				$dias_restantes = $id -> dias_restantes;
-				$horas_restantes = $id-> horas_restantes; 
-
-				$postdata['dias_restantes'] = $dias_restantes - $postdata['dias_solicitados'];
-				$postdata['horas_restantes'] = $horas_restantes;
-
-				if ($postdata['horas_solicitadas'] > 0) {
-
-					$postdata['horas_restantes'] = $horas_restantes - $postdata['horas_solicitadas'];
-
-					if ($postdata['horas_restantes'] < 0){
-						$postdata['dias_restantes'] = $postdata['dias_restantes'] - 1;
-						$postdata['horas_restantes'] = 8 + $postdata['horas_restantes'];
-					}
-				}				
-			}
-	    }
+		}
+		if ($postdata['dias_restantes'] < 0) {
+			$postdata['colectiva'] = $postdata['colectiva'] - abs($postdata['dias_restantes']);
+			$postdata['dias_restantes'] = 0;
+		} else {
+			$postdata['colectiva'] = 5;
+		}
+	}
 
 	    /* 
 	    | ---------------------------------------------------------------------- 

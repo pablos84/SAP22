@@ -34,18 +34,20 @@
 			$this->col[] = ["label" => "Gestion", "name" => "gestion"];
 			$this->col[] = ["label" => "Grado, Nombre y Apellidos", "name" => "persona_id", "join" => "personas,nombre_completo"];
 			$this->col[] = ["label" => "Destino", "name" => "distrito"];
-			$this->col[] = ["label" => "Observaciones", "name" => "departamento"];
+			$this->col[] = ["label" => "Departamento", "name" => "departamento"];
+			$this->col[] = ["label" => "Cargo", "name" => "cargo"];
+			$this->col[] = ["label" => "Especiaización", "name" => "especializacion"];
 						
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 			$this->form[] = ['label' => 'Gestión', 'name' => 'gestion', 'value' => date('Y'), 'width' => 'col-sm-7'];
-
 			$this->form[] = ['label' => 'Grado, Nombre y Apellidos', 'name' => 'persona_id', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'datatable' => 'personas,nombre_completo'];
-			$this->form[] = ['label' => 'Destino', 'name' => 'distrito', 'width' => 'col-sm-7','type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' =>  'IGM-CENTRAL;IGM-LA PAZ;IGM-SANTA CRUZ;IGM-COCHABAMBA;IGM-ORURO;IGM-TARIJA;IGM-POTOSI;IGM-SUCRE;IGM-TRINIDAD;IGM-COBIJA;IGM-YACUIBA;IGM-TUPIZA;IGM-CAMIRI;IGM-RIBERALTA;IGM-ACHACACHI;IGM-PUERTO SUAREZ;IGM-CARANAVI;IGM-CHULUMANI;OTRO DESTINO'];
-
-			$this->form[] = ['label' => 'Observaciones', 'name' => 'departamento', 'type' => 'text', 'width' => 'col-sm-7'];
+			$this->form[] = ['label' => 'Destino', 'name' => 'distrito', 'width' => 'col-sm-7','type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' =>  'CENTRAL;LA PAZ;SANTA CRUZ;COCHABAMBA;ORURO;TARIJA;POTOSI;SUCRE;TRINIDAD;COBIJA;YACUIBA;TUPIZA;CAMIRI;RIBERALTA;ACHACACHI;PUERTO SUAREZ;CARANAVI;CHULUMANI'];
+			$this->form[] = ['label' => 'Departamento (solo CENTRAL)', 'name' => 'departamento', 'type' => 'select2', 'width' => 'col-sm-7', 'dataenum' => 'CMDO.; 2DO. CMDO.;DPTO. I - RR. HH.;DPTO. II - COMERC.;DPTO. III - OPS.;DPTO. IV - LOG.;DPTO. V - ADM.;DPTO. VI - CIA. Y TEC.;DPTO. VII - PLANIF.'];
+			$this->form[] = ['label' => 'Cargo', 'name' => 'cargo', 'type' => 'select2', 'validation' => 'required', 'width' => 'col-sm-7', 'dataenum' => 'COMANDANTE;SEGUNDO COMANDANTE;JEFE DE DEPARTAMENTO;JEFE DE SECCION;AUXILIAR;CAJERO;SECRETARIA;OPERADOR;JEFE DE DISTRITO'];
+			$this->form[] = ['label' => 'Especialización', 'name' => 'especializacion', 'type' => 'text', 'placeholder'=>'Capacitaciones y/o especializaciones recibidas durante la gestion'];
 
 			# END FORM DO NOT REMOVE THIS LINE
 
@@ -265,9 +267,6 @@
 	    */
 	    public function hook_before_add(&$postdata) {        
 	        //Your code here
-
-			$postdata['cargo'] = NULL;
-
 	    }
 
 	    /* 

@@ -41,8 +41,8 @@
 			$this->form = [];
 			$this->form[] = ['label'=>'Grado, Nombre y Apellido','name'=>'persona_id','type'=>'select2','validation'=>'required|min:1|max:255','width'=>'col-sm-8','datatable'=>'personas,nombre_completo'];
 			$this->form[] = ['label'=>'Fecha de Solicitud','name'=>'f_solicitud','type'=>'date','width'=>'col-sm-8','value'=>now()];
-			$this->form[] = ['label'=>'Motivo','name'=>'motivo','type'=>'select2','validation'=>'required','width'=>'col-sm-8','datatable'=>'licencias,descripcion'];
-			$this->form[] = ['label'=>'Tiempo de licencia','name'=>'tiempolicenciacomision','type'=>'select2','width'=>'col-sm-8','datatable'=>'licencias,dias'];
+			$this->form[] = ['label'=>'Motivo', 'name' => 'motivo', 'type' => 'text', 'validation' => 'required', 'width' => 'col-sm-8'];
+			$this->form[] = ['label' => 'Tiempo de licencia', 'name' => 'tiempolicenciacomision', 'type' => 'number', 'validation' => 'required|integer|min:0', 'width' => 'col-sm-8'];
 			$this->form[] = ['label'=>'Fecha de Salida','name'=>'f_desde','type'=>'date','validation'=>'required|date','width'=>'col-sm-8'];
 			$this->form[] = ['label'=>'Fecha de Retorno','name'=>'f_hasta','type'=>'date','validation'=>'required|date','width'=>'col-sm-8'];
 			# END FORM DO NOT REMOVE THIS LINE
@@ -233,18 +233,23 @@
 	    }
 
 
-	    /*
+	/*
 	    | ---------------------------------------------------------------------- 
 	    | Hook for manipulate query of index result 
 	    | ---------------------------------------------------------------------- 
 	    | @query = current sql query 
 	    |
 	    */
-	    public function hook_query_index(&$query) {
+
+	public function hook_query_index(&$query)
+	{
 		//Your code here
 
-		$query-> where('motivo', 'NOT LIKE' ,'Comisi%');       
-	    }
+		$query->where('motivo', 'NOT LIKE', 'Comisi%');
+		if (CRUDBooster::MyName() != 'Super Admin') {
+			$query->where('distrito', 'LIKE', CRUDBooster::MyName());
+		}
+	}
 
 	    /*
 	    | ---------------------------------------------------------------------- 
@@ -265,9 +270,10 @@
 	    */
 	    public function hook_before_add(&$postdata) {
 		//Your code here
-		$licencia = DB::table('licencias') -> where('id', 'like', $postdata['motivo'])->value ('dias');
+		//$licencia = DB::table('licencias') -> where('id', 'like', $postdata['motivo'])->value ('dias');
 
-		$postdata['tiempolicenciacomision'] = $licencia;
+		$postdata['gestion'] = date('Y');
+		$postdata['distrito'] = CRUDBooster::MyName();
 
 	    }
 
