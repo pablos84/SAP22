@@ -246,9 +246,6 @@
 		//Your code here
 
 		$query->where('motivo', 'NOT LIKE', 'Comisi%');
-		if (CRUDBooster::MyName() != 'Super Admin') {
-			$query->where('distrito', 'LIKE', CRUDBooster::MyName());
-		}
 	}
 
 	    /*

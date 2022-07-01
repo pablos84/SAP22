@@ -30,11 +30,19 @@
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
+
 			$this->col = [];
 			$this->col[] = ["label"=>"Gestión","name"=>"gestion"];
 			$this->col[] = ["label"=>"Grado, Nombre y Apellido","name"=>"persona_id","join"=>"personas,nombre_completo"];
 			$this->col[] = ["label"=>"Distrito","name"=>"distrito"];
 			$this->col[] = ["label"=>"Cargo","name"=>"cargo"];
+		
+
+		/*
+		$this->col[] = ["label" => "Grado, Nombre y Apellido", "name" => "nombre"];
+		$this->col[] = ["label" => "Situacion", "name" => "situacion"];
+				*/
+			
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -242,12 +250,29 @@
 	    */
 	public function hook_query_index(&$query)
 	{
+		
 		if (
 			CRUDBooster::MyName() != 'Super Admin'
 		) {
 			$query->where('distrito', 'LIKE', CRUDBooster::MyName());
+		} else {
+			$query->where('distrito', 'LIKE', 'CENTRAL');
 		}
 		$query->where('gestion', date('Y'))->orderBy('distrito', 'asc')->orderByRaw(DB::raw("FIELD(grado,'Cnl.','Tcnl.','My.','Cap.','Tte.','Sbtte.','Sof. My.','Sof. 1ro.','Sof. 2do.','Sof. Incl.','Sgto. 1ro.','Sgto. 2do.', 'Sgto. Incl.')"))->orderBy('egreso', 'asc')->orderBy('antiguedad', 'asc');
+		
+/*		
+		$vacaciones= DB::table('vacacions','personas')->select('personas.nombre_completo','vacacions.situacion')->whereRaw('f_desde <= ? and f_hasta >= ?', now(), now())->where('vacacions.persona_id', '=', 'personas.id');
+
+		$query->DB::table('licencia_comisions', 'personas')->select('personas.nombre_completo', 'licencia_comisions.motivo')->whereRaw('f_desde <= ? and f_hasta >= ?', now(), now())->where('licencia_comisions.persona_id', '=', 'personas.id')->union($vacaciones);
+
+		
+
+
+UNION 
+
+select personas.nombre_completo AS 'GRADO, NOMBRE Y APELLIDOS', faltaatrasos.observacion AS 'SITUACION' FROM faltaatrasos, personas WHERE faltaatrasos.fecha = now() AND faltaatrasos.persona_id=personas.id UNION select personas.nombre_completo AS 'GRADO, NOMBRE Y APELLIDOS', guardias.funcion AS 'SITUACION' FROM guardias, personas WHERE guardias.fecha = now() AND guardias.persona_id = personas.id;
+*/
+
 	}
 
 	    /*

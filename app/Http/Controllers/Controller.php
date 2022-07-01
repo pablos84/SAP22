@@ -14,11 +14,11 @@ class Controller extends BaseController
     public function imprimir(){
         $fecha = date('d-m-Y');
         $distrito = $_GET['distrito'];
-
+        if ($distrito == 'Super Admin') {
+            $distrito = 'CENTRAL';
+        }
         $pdf = \PDF::loadView('pdf',compact('fecha'),compact('distrito')); //con el nombre de la vista
         $pdf->setPaper('letter', 'portrait');
-        //$pdf->set_option('defaultFont', 'Arial');
-        //$pdf->render();
-        return $pdf -> stream ('primerpdf.pdf');//NOMBRE DE LA DESCARGA
+        return $pdf -> stream ('PARTE.pdf');//NOMBRE DE LA DESCARGA
     }
 }
